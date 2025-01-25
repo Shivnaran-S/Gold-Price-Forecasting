@@ -1,4 +1,5 @@
 import streamlit as st
+import os 
 
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
@@ -16,8 +17,8 @@ chrome_options.add_argument("--no-sandbox")
 chrome_options.binary_location = "/usr/bin/chromium"  # Adjust path if needed
 
 # Set up the Chrome WebDriver
-service = Service(executable_path="/usr/bin/chromedriver")  # Preinstalled chromedriver path
-driver = webdriver.Chrome(service=service, options=chrome_options)
+ # Preinstalled chromedriver path
+#driver = webdriver.Chrome(service=service, options=chrome_options)
 
 
 from bs4 import BeautifulSoup
@@ -32,7 +33,7 @@ data = pd.DataFrame(columns=['Date', 'Morning', 'Evening'])
 def fetch_monthly_data_1(month, year):
     url = f'https://www.indgold.com/{city}-gold-rate-{month}-{year}.htm'
     # Set up the WebDriver
-    service = Service()  # chromedriver_autoinstaller handles the path automatically
+    service = Service(executable_path="/usr/bin/chromedriver")   # chromedriver_autoinstaller handles the path automatically
     driver = webdriver.Chrome(service=service, options=chrome_options)
 
     # Fetch the webpage
