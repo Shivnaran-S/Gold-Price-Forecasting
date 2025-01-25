@@ -14,7 +14,7 @@ chrome_options = Options()
 chrome_options.add_argument("--headless")  # Run in headless mode for cloud environments
 chrome_options.add_argument("--disable-dev-shm-usage")
 chrome_options.add_argument("--no-sandbox")
-chrome_options.binary_location = "/usr/bin/chromium-browser"  # Specify Chromium binary path
+chrome_options.binary_location = "/usr/bin/chromium"  # Specify Chromium binary path
 
 
 from bs4 import BeautifulSoup
