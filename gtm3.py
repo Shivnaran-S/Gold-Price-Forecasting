@@ -7,14 +7,11 @@ import sys
 import os
 import subprocess
 
-def ensure_playwright_installed():
-    try:
-        # Run playwright install only if needed
-        subprocess.run(["playwright", "install"], check=True)
-    except Exception as e:
-        print(f"Error installing Playwright: {e}")
+import subprocess
 
-ensure_playwright_installed()
+# Run setup.sh explicitly during app initialization
+subprocess.run(["bash", "setup.sh"], check=True)
+
 from playwright.async_api import async_playwright
 
 from bs4 import BeautifulSoup
