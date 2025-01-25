@@ -7,11 +7,11 @@ from selenium.webdriver.chrome.options import Options
 from bs4 import BeautifulSoup
 import chromedriver_autoinstaller
 
-custom_path = "/tmp/chromedriver"
-os.environ["CHROMEDRIVER_AUTOINSTALLER_PATH"] = custom_path
+#custom_path = "/tmp/chromedriver"
+#os.environ["CHROMEDRIVER_AUTOINSTALLER_PATH"] = custom_path
 
 # Automatically download and set up the correct version of ChromeDriver
-chromedriver_autoinstaller.install()
+#chromedriver_autoinstaller.install()
 
 chrome_options = Options()
 chrome_options.add_argument("--headless")
@@ -36,7 +36,7 @@ data = pd.DataFrame(columns=['Date', 'Morning', 'Evening'])
 def fetch_monthly_data_1(month, year):
     url = f'https://www.indgold.com/{city}-gold-rate-{month}-{year}.htm'
     # Set up the WebDriver #executable_path="/usr/bin/chromedriver"
-    service = Service()   # chromedriver_autoinstaller handles the path automatically
+    service = Service("/usr/bin/chromedriver")   # chromedriver_autoinstaller handles the path automatically
     driver = webdriver.Chrome(service=service, options=chrome_options)
 
     # Fetch the webpage
