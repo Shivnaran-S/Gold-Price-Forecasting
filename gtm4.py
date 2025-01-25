@@ -235,6 +235,9 @@ def main():
     #print(data.duplicated().sum())  # In data the date is set as index, so eventhough when the timestamp differs all those will be considered as duplicate data
     print("Number of duplicate values in the data set is : ",df.duplicated().sum()) # Here Date is a separate column, so different timestamp's similar rates are not considered as duplicates
 
+    # Convert 'Morning' and 'Evening' columns to numeric
+    data['Morning'] = pd.to_numeric(data['Morning'], errors='coerce').dropna()
+    data['Evening'] = pd.to_numeric(data['Evening'], errors='coerce').dropna()
     #Find if there are any outliers
     Q1 = data[['Morning', 'Evening']].quantile(0.25)
     Q3 = data[['Morning', 'Evening']].quantile(0.75)
