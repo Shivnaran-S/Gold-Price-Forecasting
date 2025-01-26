@@ -40,6 +40,8 @@ cities = sorted(cities)
 
 default_city = "Coimbatore"
 city = st.selectbox("Select a city from where you want to buy gold: ", cities)
+if st.button("Confirm Selection"):
+    print()
 city = city.lower()
 
 data = pd.DataFrame(columns=['Date', 'Morning', 'Evening'])
