@@ -259,6 +259,30 @@ def fetch_month_data(s_day=0):
         #print("No <div> found with id='table'.")
         return pd.DataFrame(columns=['Date', 'Morning', 'Evening'])
 
+def final_model(data, from_date, to_date):
+    from prophet import Prophet
+    
+    data_series = pd.to_numeric(data['Evening_Differenced_1'], errors='coerce').dropna() # train_data.iloc[:,-1]
+    data_series.index.freq = pd.infer_freq(data_series.index) # 'D'
+    
+    df = data_series.reset_index()        
+    df.columns = ['ds','y']
+    
+    model = Prophet()
+    modl.fit(df)
+    
+    # Create a future dataframe for prediction
+    future = model.make_future_dataframe(periods=(to_date - from_date).days)
+    forecast = model.predict(future)
+
+    # Find the date with the minimum forecasted value
+    min_forecast_row = forecast.loc[forecast['yhat'].idxmin()]  # Get the row with the minimum value
+    min_date = min_forecast_row['ds']
+    min_value = min_forecast_row['yhat']
+
+    # Return the date and minimum forecasted value
+    return min_date, min_value
+              
 def main():
     st.sidebar.title("Navigation")
     page = st.sidebar.selectbox("Select a page:", ["Predictor", "Analysis"])
@@ -290,8 +314,9 @@ def main():
         else:
             today_date = datetime.today().date()
             from_date = st.date_input("Select from which date you are planning to buy gold:", value=today_date,min_value=today_date)
-            to_date = st.date_input("Select before which date you are planning to buy gold:", value=from_date,min_value=from_date)
-            
+            to_date = st.date_input("Select before which date you are planning to buy gold, starting from the above date:", value=from_date,min_value=from_date)
+            day, price = final_model(data, from_date, to_date)
+            print(f"Finally we are done. Buy gold on {}. This will minimize your loss eventhough it couldn't maximize your profit")
     if page == "Analysis":
         if not st.session_state.is_predictor_done:
             st.error("Please complete the Predictor step first!")
