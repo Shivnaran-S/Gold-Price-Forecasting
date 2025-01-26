@@ -315,6 +315,19 @@ def main():
             today_date = datetime.today().date()
             from_date = st.date_input("Select from which date you are planning to buy gold:", value=today_date,min_value=today_date)
             to_date = st.date_input("Select before which date you are planning to buy gold, starting from the above date:", value=from_date,min_value=from_date)
+
+            data = fetch_data(city)
+            data['Date'] = pd.to_datetime(data['Date']).dt.date
+            data.set_index('Date', inplace=True)
+            data.index = pd.to_datetime(data.index)
+        
+            # Optionally, infer frequency if it's consistent (daily, monthly, etc.)
+            if data.index.is_unique:
+                data = data.asfreq('D') 
+            data['Evening_Differenced_1'] = [None] * len(data)
+            for i in range(1, len(data)):
+                data.iloc[i,-1] = data.iloc[i,1] - data.iloc[i-1,1]
+                
             day, price = final_model(data, from_date, to_date)
             print(f"Finally we are done. Buy gold on {day}. This will minimize your loss eventhough it couldn't maximize your profit")
     if page == "Analysis":
