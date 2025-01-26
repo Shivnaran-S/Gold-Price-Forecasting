@@ -37,8 +37,6 @@ plt.show = custom_show
 
 DB_NAME = "gold_rates.db"
 
-city = 'coimbatore'
-
 def init_db():
     conn = sqlite3.connect(DB_NAME)
     cursor = conn.cursor()
@@ -67,11 +65,11 @@ def fetch_data(city):
     
 
     if not data:
-        data = init_data()
+        data = init_data(city)
         df = data.copy()
 
     else:
-        data, df = update_data(data) # data will be having the original data from db with updated data while 
+        data, df = update_data(city, data) # data will be having the original data from db with updated data while 
                                      # df will have the last few rows of data which are not in db and the data which is webscarped now and it must be added to the db
 
     df['Date'] = pd.to_datetime(df['Date']).dt.strftime('%Y-%m-%d')
@@ -88,15 +86,15 @@ def fetch_data(city):
     conn.close()
     return data
 
-def init_data():
+def init_data(city):
     st.write("Please wait! The data is beeing fetched.")
     st.write("\n")
-    data1 = fetch_all_data_1()
+    data1 = fetch_all_data_1(city)
 
     st.write("Really sorry for making you to wait!") 
     st.write("Please wait for some more time! The data is beeing fetched.")    
     st.write("\n")   
-    data2 = fetch_all_data_2()
+    data2 = fetch_all_data_2(city)
     
     st.write("Done! Fetched data. Thank you so much for your patience!")
     #data3 = pd.concat([data1, data2], ignore_index=True)
@@ -105,7 +103,7 @@ def init_data():
     data = pd.concat([data1, data2], ignore_index=True)
     return data
 
-def update_data(data):
+def update_data(city, data):
     data = pd.DataFrame(data, columns=['Date', 'Morning', 'Evening'])
     data['Date'] = pd.to_datetime(data['Date']).dt.strftime('%d-%b-%y')
 
@@ -116,11 +114,11 @@ def update_data(data):
     s_month = int( last_date.strftime('%m') )
     s_year = int( last_date.strftime('%Y') )
 
-    df = fetch_all_data_2(s_day+1,s_month,s_year)
+    df = fetch_all_data_2(city, s_day+1,s_month,s_year)
     data = pd.concat([data, df], ignore_index=True)
     return data,df
 
-def fetch_monthly_data_1(month, year):
+def fetch_monthly_data_1(city, month, year):
     url = f'https://www.indgold.com/{city}-gold-rate-{month}-{year}.htm'
     
     service = Service("/usr/bin/chromedriver")   
@@ -147,7 +145,7 @@ def fetch_monthly_data_1(month, year):
     else:
         return pd.DataFrame(columns=['Date', 'Morning', 'Evening'])
     
-def fetch_all_data_1():
+def fetch_all_data_1(city):
     start_year, end_year = 2021, 2023
     months = ['january', 'february', 'march', 'april', 'may', 'june', 'july','august', 'september', 'october', 'november', 'december']
 
@@ -160,14 +158,14 @@ def fetch_all_data_1():
             if year == 2023 and month == 'august':
               break
 
-            month_data = fetch_monthly_data_1(month, year)
+            month_data = fetch_monthly_data_1(city, month, year)
 
             all_data = pd.concat([all_data, month_data], ignore_index=True)
             
     return all_data
     #all_data.to_csv('gold_rate_data_aug2021_jul2023.csv', index=False)
 
-def fetch_monthly_data_2(month, year):
+def fetch_monthly_data_2(city, month, year):
     url = f'https://www.indgold.com/{city}-gold-rate-{month}-{year}.htm'
     # Set up the WebDriver
     service = Service()  # chromedriver_autoinstaller handles the path automatically
@@ -195,7 +193,7 @@ def fetch_monthly_data_2(month, year):
     else:
         return pd.DataFrame(columns=['Date', 'Morning', 'Evening'])
 
-def fetch_all_data_2(s_day=1,s_month=8,s_year=2023): #Starting from which date we need to fetch data
+def fetch_all_data_2(city, s_day=1,s_month=8,s_year=2023): #Starting from which date we need to fetch data
     s_month-=1
     s_day-=1 #for indexing
     months = ['january', 'february', 'march', 'april', 'may', 'june', 'july', 'august', 'september', 'october', 'november', 'december']
@@ -216,19 +214,19 @@ def fetch_all_data_2(s_day=1,s_month=8,s_year=2023): #Starting from which date w
             if year == t_year and month == months[t_month]:
                 break
             
-            month_data = fetch_monthly_data_2(month, year)
+            month_data = fetch_monthly_data_2(city, month, year)
             all_data = pd.concat([all_data, month_data], ignore_index=True)
 
     if s_month == t_month and s_year==t_year:
-        df = fetch_month_data(s_day)
+        df = fetch_month_data(city, s_day)
     else:
-        df = fetch_month_data()
+        df = fetch_month_data(city)
         all_data = all_data.iloc[s_day:]
     all_data = pd.concat([all_data, df], ignore_index=True)
     return all_data
     #combined_data.to_csv('gold_rate_data_aug2021_dec2024.csv', index=False)
 
-def fetch_month_data(s_day=0):
+def fetch_month_data(city, s_day=0):
     if city in ['mumbai','delhi','chennai','bangalore','hyderabad','cochin']:
         url = f'https://www.indgold.com/{city}-gold-rates.htm'
     else:
@@ -295,6 +293,7 @@ def main():
         st.session_state.is_predictor_done = False  # Flag to track if Predictor step is completed
     if "is_analysis_done" not in st.session_state:
         st.session_state.is_analysis_done = False
+    city = None
     if page=="Predictor":
         if not st.session_state.is_predictor_done:
             st.title("GOLDEN TIME MACHINE")
