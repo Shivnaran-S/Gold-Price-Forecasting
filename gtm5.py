@@ -411,8 +411,8 @@ def main():
     plt.show()
 
     #21-22
-    start_date = pd.to_datetime('1-Aug-21', format='%d-%b-%y')
-    end_date = pd.to_datetime('31-Jul-22', format='%d-%b-%y')
+    start_date = pd.to_datetime('1-Aug-21', format='%d-%b-%y').date()
+    end_date = pd.to_datetime('31-Jul-22', format='%d-%b-%y').date()
     
     min_val = min(data['Morning'][start_date:end_date].min(), data['Evening'][start_date:end_date].min())
     max_val = max(data['Morning'][start_date:end_date].max(), data['Evening'][start_date:end_date].max())
