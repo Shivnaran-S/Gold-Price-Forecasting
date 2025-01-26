@@ -316,7 +316,7 @@ def main():
             from_date = st.date_input("Select from which date you are planning to buy gold:", value=today_date,min_value=today_date)
             to_date = st.date_input("Select before which date you are planning to buy gold, starting from the above date:", value=from_date,min_value=from_date)
             day, price = final_model(data, from_date, to_date)
-            print(f"Finally we are done. Buy gold on {}. This will minimize your loss eventhough it couldn't maximize your profit")
+            print(f"Finally we are done. Buy gold on {day}. This will minimize your loss eventhough it couldn't maximize your profit")
     if page == "Analysis":
         if not st.session_state.is_predictor_done:
             st.error("Please complete the Predictor step first!")
