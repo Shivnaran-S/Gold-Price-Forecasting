@@ -298,14 +298,15 @@ def main():
     #Load the dataset and make Date as index of the dataframe
     #data = pd.read_csv("gold_rate_data_aug2021_jan2025.csv")
     df = data.copy()
-    print(data)
-    data['Date'] = pd.to_datetime(data['Date'])
+    
+    #print(data)
+    data['Date'] = pd.to_datetime(data['Date']).dt.date
     #data['Date'] = pd.to_datetime(data['Date'],format='%d-%b-%y').dt.date
     data.set_index('Date', inplace=True)
 
     print("THE FOLLOWING IS THE DATASET")
     print(data)
-    exit()
+    
     #Prepare the train and test data set
     no_of_rows = len(data)
     train_data = data.iloc[:no_of_rows-30,:]
@@ -440,7 +441,7 @@ def main():
     x_max = data.index.max()
     
     start_date = pd.to_datetime('1-Aug-24', format='%d-%b-%y').date()
-    filtered_data = data[(data.index >= start_date) & (data.index <= end_date)]
+    filtered_data = data[(data.index >= start_date)]
 
     min_val = min(filtered_data['Morning'].min(), filtered_data['Evening'].min())
     max_val = max(filtered_data['Morning'].max(), filtered_data['Evening'].max())
