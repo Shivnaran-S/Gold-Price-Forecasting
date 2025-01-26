@@ -269,7 +269,7 @@ def final_model(data, from_date, to_date):
     df.columns = ['ds','y']
     
     model = Prophet()
-    modl.fit(df)
+    model.fit(df)
     
     # Create a future dataframe for prediction
     future = model.make_future_dataframe(periods=(to_date - from_date).days)
