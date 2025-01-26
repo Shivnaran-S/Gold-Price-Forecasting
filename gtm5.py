@@ -37,6 +37,8 @@ plt.show = custom_show
 
 DB_NAME = "gold_rates.db"
 
+city = "coimbatore"
+
 def init_db():
     conn = sqlite3.connect(DB_NAME)
     cursor = conn.cursor()
@@ -293,7 +295,8 @@ def main():
         st.session_state.is_predictor_done = False  # Flag to track if Predictor step is completed
     if "is_analysis_done" not in st.session_state:
         st.session_state.is_analysis_done = False
-    city = None
+    global city
+    city = "coimbatore"
     if page=="Predictor":
         if not st.session_state.is_predictor_done:
             st.title("GOLDEN TIME MACHINE")
