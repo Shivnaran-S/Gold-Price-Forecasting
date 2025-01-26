@@ -319,7 +319,7 @@ def main():
     #Find if there is any duplicate row
     #print(data.duplicated().sum())  # In data the date is set as index, so eventhough when the timestamp differs all those will be considered as duplicate data
     print("Number of duplicate values in the data set is : ",df.duplicated().sum()) # Here Date is a separate column, so different timestamp's similar rates are not considered as duplicates
-
+    
     # Convert 'Morning' and 'Evening' columns to numeric
     data['Morning'] = pd.to_numeric(data['Morning'], errors='coerce').dropna()
     data['Evening'] = pd.to_numeric(data['Evening'], errors='coerce').dropna()
@@ -409,7 +409,7 @@ def main():
     plt.ylabel("Gold Price")
     plt.title("Date v/s Gold Price")
     plt.show()
-
+    '''
     #21-22
     start_date = pd.to_datetime('1-Aug-21', format='%d-%b-%y').date()
     end_date = pd.to_datetime('31-Jul-22', format='%d-%b-%y').date()
@@ -456,7 +456,7 @@ def main():
     plt.ylabel("Gold Price")
     plt.title("Gold Price for the year 2024-25")
     plt.show()
-
+    '''
     #Rolling mean and standard deviation
     rolling_window = 30  # size of the rolling window is 30 as there are 30 days in a month
 
