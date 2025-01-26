@@ -290,7 +290,7 @@ def main():
         else:
             today_date = datetime.today().date()
             from_date = st.date_input("Select from which date you are planning to buy gold:", value=today_date,min_value=today_date)
-            to_date = st.date_input("Select before which date you are planning to buy gold:", value=today_date,min_value=today_date)
+            to_date = st.date_input("Select before which date you are planning to buy gold:", value=from_date,min_value=from_date)
             
     if page == "Analysis":
         if not st.session_state.is_predictor_done:
