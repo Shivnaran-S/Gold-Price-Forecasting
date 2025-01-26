@@ -417,8 +417,6 @@ def main():
     data_filtered = data[(data['Date'] >= start_date) & (data['Date'] <= end_date)]
     min_val = min(data_filtered['Morning'].min(), data_filtered['Evening'].min())
     max_val = max(data_filtered['Morning'].min(), data_filtered['Evening'].min())
-    #min_val = min(data['Morning']['1-Aug-21':'31-Jul-22'].min(), data['Evening']['1-Aug-21':'31-Jul-22'].min())
-    #max_val = max(data['Morning']['1-Aug-21':'31-Jul-22'].max(), data['Evening']['1-Aug-21':'31-Jul-22'].max())
 
     data.plot(xlim=[start_date,end_date],ylim=[min_val,max_val],figsize=(15,4))
     plt.xlabel("Date")
