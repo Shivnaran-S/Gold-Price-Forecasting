@@ -263,7 +263,7 @@ def fetch_month_data(s_day=0):
 def main():
     st.sidebar.title("Navigation")
     page = st.sidebar.selectbox("Select a page:", ["Predictor", "Analysis"])
-
+    data = pd.DataFrame(columns=['Date', 'Morning', 'Evening'])
     if page=="Predictor":
         st.title("GOLDEN TIME MACHINE")
     
