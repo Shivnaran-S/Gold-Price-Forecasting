@@ -288,7 +288,7 @@ def final_model(data, from_date, to_date):
 def main():
     st.sidebar.title("Navigation")
     page = st.sidebar.selectbox("Select a page:", ["Predictor", "Analysis"])
-    data = pd.DataFrame(columns=['Date', 'Morning', 'Evening'])
+    #data = pd.DataFrame(columns=['Date', 'Morning', 'Evening'])
     if "is_predictor_done" not in st.session_state:
         st.session_state.is_predictor_done = False  # Flag to track if Predictor step is completed
     if "is_analysis_done" not in st.session_state:
