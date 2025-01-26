@@ -272,15 +272,19 @@ def final_model(data, from_date, to_date):
     model.fit(df)
     
     # Create a future dataframe for prediction
-    future = model.make_future_dataframe(periods=(to_date - from_date).days)
+    # Create a future dataframe for prediction
+    future = model.make_future_dataframe(periods=(to_date - df['ds'].max().date()).days)
+
+    # Predict the forecast
     forecast = model.predict(future)
 
-    # Find the date with the minimum forecasted value
-    min_forecast_row = forecast.loc[forecast['yhat'].idxmin()]  # Get the row with the minimum value
+    # Filter the forecasted data for the specified range
+    filtered_forecast = forecast[(forecast['ds'] >= pd.Timestamp(from_date)) & (forecast['ds'] <= pd.Timestamp(to_date))]
+
+    # Find the date with the minimum forecasted value within the range
+    min_forecast_row = filtered_forecast.loc[filtered_forecast['yhat'].idxmin()]  # Get the row with the minimum value
     min_date = min_forecast_row['ds']
     min_value = min_forecast_row['yhat']
-
-    # Return the date and minimum forecasted value
     return min_date, min_value
               
 def main():
