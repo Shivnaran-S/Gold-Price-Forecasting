@@ -39,7 +39,7 @@ cities = ["Mumbai", "Delhi", "Chennai", "Kolkata", "Bangalore", "Hyderabad", "Ah
 cities = sorted(cities)
 
 default_city = "Coimbatore"
-city = st.selectbox("Select a city from where you want to buy gold: ", cities)
+city = st.selectbox("Select a city from where you want to buy gold: ", cities, index=cities.index(default_city))
 if st.button("Confirm Selection"):
     print()
 else:
@@ -411,8 +411,8 @@ def main():
     plt.show()
 
     #21-22
-    start_date = pd.to_datetime('1-Aug-21', format='%d-%b-%y').dt.date
-    end_date = pd.to_datetime('31-Jul-22', format='%d-%b-%y').dt.date
+    start_date = pd.to_datetime('1-Aug-21', format='%d-%b-%y')
+    end_date = pd.to_datetime('31-Jul-22', format='%d-%b-%y')
     
     data_filtered = data[(data['Date'] >= start_date) & (data['Date'] <= end_date)]
     min_val = min(data_filtered['Morning'].min(), data_filtered['Evening'].min())
