@@ -411,8 +411,8 @@ def main():
     plt.show()
 
     #21-22
-    start_date = pd.to_datetime('1-Aug-21', format='%d-%b-%y')
-    end_date = pd.to_datetime('31-Jul-22', format='%d-%b-%y')
+    start_date = pd.to_datetime('1-Aug-21', format='%d-%b-%y').dt.date
+    end_date = pd.to_datetime('31-Jul-22', format='%d-%b-%y').dt.date
     
     data_filtered = data[(data['Date'] >= start_date) & (data['Date'] <= end_date)]
     min_val = min(data_filtered['Morning'].min(), data_filtered['Evening'].min())
