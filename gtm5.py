@@ -409,54 +409,47 @@ def main():
     plt.ylabel("Gold Price")
     plt.title("Date v/s Gold Price")
     plt.show()
-    '''
+
+    def year_wise_plot(start_date, end_date):
+        start_date = pd.to_datetime(start_date, format='%d-%b-%y').date()
+        end_date = pd.to_datetime(end_date, format='%d-%b-%y').date()
+        
+        filtered_data = data[(data.index >= start_date) & (data.index <= end_date)]
+
+        # Calculate the min and max values for 'Morning' and 'Evening' columns
+        min_val = min(filtered_data['Morning'].min(), filtered_data['Evening'].min())
+        max_val = max(filtered_data['Morning'].max(), filtered_data['Evening'].max())
+
+        data.plot(xlim=[start_date,end_date],ylim=[min_val,max_val],figsize=(15,4))
+        plt.xlabel("Date")
+        plt.ylabel("Gold Price")
+        plt.title(f"Time series plot from {start_date} to {end_date}")
+        plt.show()
+
     #21-22
-    start_date = pd.to_datetime('1-Aug-21', format='%d-%b-%y').date()
-    end_date = pd.to_datetime('31-Jul-22', format='%d-%b-%y').date()
+    year_wise_plot('1-Aug-21', '31-Jul-22')
     
-    filtered_data = data[(data.index >= start_date) & (data.index <= end_date)]
-
-    # Calculate the min and max values for 'Morning' and 'Evening' columns
-    min_val = min(filtered_data['Morning'].min(), filtered_data['Evening'].min())
-    max_val = max(filtered_data['Morning'].max(), filtered_data['Evening'].max())
-
-    data.plot(xlim=[start_date,end_date],ylim=[min_val,max_val],figsize=(15,4))
-    plt.xlabel("Date")
-    plt.ylabel("Gold Price")
-    plt.title("Gold Price for the year 2021-22")
-    plt.show()
-
     #22-23
-    min_val = min(data['Morning']['1-Aug-22':'31-Jul-23'].min(), data['Evening']['1-Aug-22':'31-Jul-23'].min())
-    max_val = max(data['Morning']['1-Aug-22':'31-Jul-23'].max(), data['Evening']['1-Aug-22':'31-Jul-23'].max())
-
-    data.plot(xlim=['1-Aug-22','31-Jul-23'],ylim=[min_val,max_val],figsize=(15,4))
-    plt.xlabel("Date")
-    plt.ylabel("Gold Price")
-    plt.title("Gold Price for the year 2022-23")
-    plt.show()
-
+    year_wise_plot('1-Aug-22', '31-Jul-23')
+    
     #23-24
-    min_val = min(data['Morning']['1-Aug-23':'31-Jul-24'].min(), data['Evening']['1-Aug-23':'31-Jul-24'].min())
-    max_val = max(data['Morning']['1-Aug-23':'31-Jul-24'].max(), data['Evening']['1-Aug-23':'31-Jul-24'].max())
-
-    data.plot(xlim=['1-Aug-23','31-Jul-24'],ylim=[min_val,max_val],figsize=(15,4))
-    plt.xlabel("Date")
-    plt.ylabel("Gold Price")
-    plt.title("Gold Price for the year 2023-24")
-    plt.show()
+    year_wise_plot('1-Aug-23', '31-Jul-24')
 
     #24-25
     x_max = data.index.max()
-    min_val = min(data['Morning']['1-Aug-24':].min(), data['Evening']['1-Aug-24':].min())
-    max_val = max(data['Morning']['1-Aug-24':].max(), data['Evening']['1-Aug-24':].max())
+    
+    start_date = pd.to_datetime('1-Aug-24', format='%d-%b-%y').date()
+    filtered_data = data[(data.index >= start_date) & (data.index <= end_date)]
 
-    data.plot(xlim=['1-Aug-24',x_max],ylim=[min_val,max_val],figsize=(15,4))
+    min_val = min(filtered_data['Morning'].min(), filtered_data['Evening'].min())
+    max_val = max(filtered_data['Morning'].max(), filtered_data['Evening'].max())
+    
+    data.plot(xlim=[start_date,x_max],ylim=[min_val,max_val],figsize=(15,4))
     plt.xlabel("Date")
     plt.ylabel("Gold Price")
     plt.title("Gold Price for the year 2024-25")
     plt.show()
-    '''
+    
     #Rolling mean and standard deviation
     rolling_window = 30  # size of the rolling window is 30 as there are 30 days in a month
 
@@ -476,6 +469,12 @@ def main():
 
     #Statistical plots
     import statsmodels.api as sm
+    data.index = pd.to_datetime(data.index)
+
+    # Optionally, infer frequency if it's consistent (daily, monthly, etc.)
+    if data.index.is_unique:
+        data = data.asfreq('D')  # or 'M' for monthly, depending on your data
+
 
     # Y(t) = Trend(t) + Seasonal(t) + Residual(t)
     decomposition = sm.tsa.seasonal_decompose(data['Morning'], model='additive')
