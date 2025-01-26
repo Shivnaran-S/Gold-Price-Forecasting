@@ -39,7 +39,7 @@ cities = ["Mumbai", "Delhi", "Chennai", "Kolkata", "Bangalore", "Hyderabad", "Ah
 cities = sorted(cities)
 
 default_city = "Coimbatore"
-city = st.selectbox("Select a city from where you want to buy gold: ", cities, index=cities.index(default_city))
+city = st.selectbox("Select a city from where you want to buy gold: ", cities)
 city = city.lower()
 
 data = pd.DataFrame(columns=['Date', 'Morning', 'Evening'])
@@ -295,7 +295,7 @@ def main():
     #data = pd.read_csv("gold_rate_data_aug2021_jan2025.csv")
     df = data.copy()
 
-    data['Date'] = pd.to_datetime(data['Date'],format='%d-%b-%y')
+    data['Date'] = pd.to_datetime(data['Date'],format='%d-%b-%y').dt.date
     data.set_index('Date', inplace=True)
 
     print("THE FOLLOWING IS THE DATASET")
