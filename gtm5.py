@@ -301,7 +301,6 @@ def main():
 
     data['Date'] = pd.to_datetime(data['Date'],format='%d-%b-%y').dt.date
     data.set_index('Date', inplace=True)
-    data.index = pd.to_datetime(data.index, freq='D')
     
     print("THE FOLLOWING IS THE DATASET")
     print(data)
