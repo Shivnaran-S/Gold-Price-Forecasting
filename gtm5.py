@@ -288,7 +288,6 @@ def main():
         if not st.session_state.is_analysis_done:
             st.error("Let the Analysis get completed first")
         else:
-            import datetime
             today_date = datetime.today().date()
             from_date = st.date_input("Select from which date you are planning to buy gold:", value=today_date,min_value=today_date)
             to_date = st.date_input("Select before which date you are planning to buy gold:", value=today_date,min_value=today_date)
