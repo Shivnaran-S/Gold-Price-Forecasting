@@ -302,7 +302,6 @@ def main():
             cities = sorted(cities)
             
             default_city = "Coimbatore"
-            global city
             city = st.selectbox("Select a city from where you want to buy gold: ", cities, index=cities.index(default_city))
             if st.button("Confirm Selection"):
                 print()
