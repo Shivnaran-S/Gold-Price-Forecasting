@@ -261,6 +261,9 @@ def fetch_month_data(s_day=0):
         return pd.DataFrame(columns=['Date', 'Morning', 'Evening'])
 
 def main():
+    st.sidebar.title("Navigation")
+    page = st.sidebar.selectbox("Select a page:", ["Predictor", "Analysis"])
+    
     st.title("GOLDEN TIME MACHINE")
 
     cities = ["Mumbai", "Delhi", "Chennai", "Kolkata", "Bangalore", "Hyderabad", "Ahmedabad","Surat","Pune","Mysore","Mangalore","Madurai","Tiruchirappalli","Coimbatore","Salem","Cochin","Kozhikode","Thiruvananthapuram","Thrissur"]
