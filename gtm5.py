@@ -42,6 +42,8 @@ default_city = "Coimbatore"
 city = st.selectbox("Select a city from where you want to buy gold: ", cities)
 if st.button("Confirm Selection"):
     print()
+else:
+    exit()
 city = city.lower()
 
 data = pd.DataFrame(columns=['Date', 'Morning', 'Evening'])
@@ -299,7 +301,8 @@ def main():
 
     data['Date'] = pd.to_datetime(data['Date'],format='%d-%b-%y').dt.date
     data.set_index('Date', inplace=True)
-
+    data.index = pd.to_datetime(data.index, freq='D')
+    
     print("THE FOLLOWING IS THE DATASET")
     print(data)
 
