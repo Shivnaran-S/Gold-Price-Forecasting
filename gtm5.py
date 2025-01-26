@@ -414,9 +414,11 @@ def main():
     start_date = pd.to_datetime('1-Aug-21', format='%d-%b-%y').date()
     end_date = pd.to_datetime('31-Jul-22', format='%d-%b-%y').date()
     
-    min_val = min(data['Morning'][start_date:end_date].min(), data['Evening'][start_date:end_date].min())
-    max_val = max(data['Morning'][start_date:end_date].max(), data['Evening'][start_date:end_date].max())
+    filtered_data = data[(data.index >= start_date) & (data.index <= end_date)]
 
+    # Calculate the min and max values for 'Morning' and 'Evening' columns
+    min_val = min(filtered_data['Morning'].min(), filtered_data['Evening'].min())
+    max_val = max(filtered_data['Morning'].max(), filtered_data['Evening'].max())
 
     data.plot(xlim=[start_date,end_date],ylim=[min_val,max_val],figsize=(15,4))
     plt.xlabel("Date")
