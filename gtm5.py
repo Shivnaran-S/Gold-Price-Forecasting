@@ -38,7 +38,6 @@ plt.show = custom_show
 DB_NAME = "gold_rates.db"
 
 city = 'coimbatore'
-data = pd.DataFrame(columns=['Date', 'Morning', 'Evening'])
 
 def init_db():
     conn = sqlite3.connect(DB_NAME)
@@ -282,7 +281,6 @@ def main():
         city = city.lower()
         
         init_db()
-        data = fetch_data(city)
         st.session_state.is_predictor_done = True
 
     if page == "Analysis":
@@ -292,6 +290,7 @@ def main():
             '''DATA'''
             #Load the dataset and make Date as index of the dataframe
             #data = pd.read_csv("gold_rate_data_aug2021_jan2025.csv")
+            data = fetch_data(city)
             df = data.copy()
             
             #print(data)
