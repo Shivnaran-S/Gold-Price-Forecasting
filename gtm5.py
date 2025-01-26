@@ -268,22 +268,23 @@ def main():
     if "is_analysis_done" not in st.session_state:
         st.session_state.is_analysis_done = False
     if page=="Predictor":
-        st.title("GOLDEN TIME MACHINE")
-    
-        cities = ["Mumbai", "Delhi", "Chennai", "Kolkata", "Bangalore", "Hyderabad", "Ahmedabad","Surat","Pune","Mysore","Mangalore","Madurai","Tiruchirappalli","Coimbatore","Salem","Cochin","Kozhikode","Thiruvananthapuram","Thrissur"]
-        cities = sorted(cities)
+        if not st.session_state.is_predictor_done:
+            st.title("GOLDEN TIME MACHINE")
         
-        default_city = "Coimbatore"
-        global city
-        city = st.selectbox("Select a city from where you want to buy gold: ", cities, index=cities.index(default_city))
-        if st.button("Confirm Selection"):
-            print()
-        else:
-            exit()
-        city = city.lower()
-        
-        init_db()
-        st.session_state.is_predictor_done = True
+            cities = ["Mumbai", "Delhi", "Chennai", "Kolkata", "Bangalore", "Hyderabad", "Ahmedabad","Surat","Pune","Mysore","Mangalore","Madurai","Tiruchirappalli","Coimbatore","Salem","Cochin","Kozhikode","Thiruvananthapuram","Thrissur"]
+            cities = sorted(cities)
+            
+            default_city = "Coimbatore"
+            global city
+            city = st.selectbox("Select a city from where you want to buy gold: ", cities, index=cities.index(default_city))
+            if st.button("Confirm Selection"):
+                print()
+            else:
+                exit()
+            city = city.lower()
+            
+            init_db()
+            st.session_state.is_predictor_done = True
         if not st.session_state.is_analysis_done:
             st.error("Let the Analysis get completed first")
         else:
