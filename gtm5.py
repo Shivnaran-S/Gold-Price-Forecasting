@@ -265,6 +265,8 @@ def main():
     data = pd.DataFrame(columns=['Date', 'Morning', 'Evening'])
     if "is_predictor_done" not in st.session_state:
         st.session_state.is_predictor_done = False  # Flag to track if Predictor step is completed
+    if "is_analysis_done" not in st.session_state:
+        st.session_state.is_analysis_done = False
     if page=="Predictor":
         st.title("GOLDEN TIME MACHINE")
     
@@ -282,7 +284,12 @@ def main():
         
         init_db()
         st.session_state.is_predictor_done = True
-
+        if not st.session_state.is_analysis_done:
+            st.error("Let the Analysis get completed first")
+        else:
+            from_date = st.date_input("Select from which date you are planning to buy gold:", value=pd.Timestamp.now().date())
+            to_date = st.date_input("Select before which date you are planning to buy gold:", value=pd.Timestamp.now().date())
+            
     if page == "Analysis":
         if not st.session_state.is_predictor_done:
             st.error("Please complete the Predictor step first!")
@@ -913,6 +920,7 @@ def main():
             LSTM_MODEL()
             PROPHET_MODEL()
             print("The Prophet model works better compared to other models.")
+            st.session_state.is_analysis_done = True
         
 if __name__ == "__main__":
     main()
