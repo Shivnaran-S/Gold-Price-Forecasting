@@ -203,7 +203,7 @@ def fetch_all_data_2(s_day=1,s_month=8,s_year=2023): #Starting from which date w
             #    continue
             if year == s_year and month not in months[s_month:]:
                 continue
-            if year == t_year and month == months[month]:
+            if year == t_year and month == months[t_month]:
                 break
             
             month_data = fetch_monthly_data_2(month, year)
