@@ -18,7 +18,27 @@ import matplotlib.pyplot as plt
 import builtins
 from datetime import datetime
 
+# Save the original print function
+Print = builtins.print
+
+# Save the original plt.show
+Plot = plt.show
+
+# Override the print function
+def print(*args, **kwargs):
+    st.write(*args, **kwargs)
+
+# Override plt.show() with st.pyplot()
+def custom_show(*args, **kwargs):
+    st.pyplot(plt)
+
+# Override plt.show
+plt.show = custom_show
+
 DB_NAME = "gold_rates.db"
+
+city = 'coimbatore'
+data = pd.DataFrame(columns=['Date', 'Morning', 'Evening'])
 
 def init_db():
     conn = sqlite3.connect(DB_NAME)
@@ -34,20 +54,7 @@ def init_db():
     """)
     conn.commit()
     conn.close()
-
-cities = ["Mumbai", "Delhi", "Chennai", "Kolkata", "Bangalore", "Hyderabad", "Ahmedabad","Surat","Pune","Mysore","Mangalore","Madurai","Tiruchirappalli","Coimbatore","Salem","Cochin","Kozhikode","Thiruvananthapuram","Thrissur"]
-cities = sorted(cities)
-
-default_city = "Coimbatore"
-city = st.selectbox("Select a city from where you want to buy gold: ", cities, index=cities.index(default_city))
-if st.button("Confirm Selection"):
-    print()
-else:
-    exit()
-city = city.lower()
-
-data = pd.DataFrame(columns=['Date', 'Morning', 'Evening'])
-
+    
 def fetch_data(city):
     conn = sqlite3.connect(DB_NAME)
     cursor = conn.cursor()
@@ -254,46 +261,23 @@ def fetch_month_data(s_day=0):
         return pd.DataFrame(columns=['Date', 'Morning', 'Evening'])
 
 def main():
-    #st.title("Gold Rate Data Fetcher")
-    #month = st.text_input("Enter the month (e.g., 'may'):", "may")
-    #year = st.number_input("Enter the year:", min_value=2000, max_value=2025, value=2022)
-    '''
-    #if st.button("Fetch Data"):
-    loop = asyncio.get_event_loop()
-        
-    data1 = loop.run_until_complete(fetch_all_data_1())
-    st.write("Wait-1")
-        
-    data2 = loop.run_until_complete(fetch_all_data_2())
-    st.write("Wait-2")
+    st.title("GOLDEN TIME MACHINE")
 
-    data3 = pd.concat([data1, data2], ignore_index=True)
-    data4 = loop.run_until_complete(fetch_month_data())
-    st.write("Wait-3")
-
-    data = pd.concat([data3, data4], ignore_index=True)
-    st.dataframe(data)
-    '''
+    cities = ["Mumbai", "Delhi", "Chennai", "Kolkata", "Bangalore", "Hyderabad", "Ahmedabad","Surat","Pune","Mysore","Mangalore","Madurai","Tiruchirappalli","Coimbatore","Salem","Cochin","Kozhikode","Thiruvananthapuram","Thrissur"]
+    cities = sorted(cities)
+    
+    default_city = "Coimbatore"
+    global city
+    city = st.selectbox("Select a city from where you want to buy gold: ", cities, index=cities.index(default_city))
+    if st.button("Confirm Selection"):
+        print()
+    else:
+        exit()
+    city = city.lower()
+    
     init_db()
     data = fetch_data(city)
-
-    # Save the original print function
-    Print = builtins.print
-
-    # Save the original plt.show
-    Plot = plt.show
-
-    # Override the print function
-    def print(*args, **kwargs):
-        st.write(*args, **kwargs)
-
-    # Override plt.show() with st.pyplot()
-    def custom_show(*args, **kwargs):
-        st.pyplot(plt)
-
-    # Override plt.show
-    plt.show = custom_show
-
+    
     '''DATA'''
     #Load the dataset and make Date as index of the dataframe
     #data = pd.read_csv("gold_rate_data_aug2021_jan2025.csv")
