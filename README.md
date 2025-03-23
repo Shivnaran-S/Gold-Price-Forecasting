@@ -1,5 +1,7 @@
 # Golden Time Machine: Predicting Gold Prices with ARIMA, LSTM, and Prophet Models
 
+[Streamlit Cloud Deployment Link - Demo of Golden Time Machine](https://golden-time-machine.streamlit.app/)
+
 ## Overview
 
 The **Golden Time Machine** is a sophisticated tool designed to predict future gold prices using historical and real-time data. Leveraging advanced machine learning models such as ARIMA, LSTM, and Prophet, this project provides actionable insights to help users make informed decisions about when to buy gold. The system is deployed on **Streamlit Cloud**, offering a seamless user experience.
